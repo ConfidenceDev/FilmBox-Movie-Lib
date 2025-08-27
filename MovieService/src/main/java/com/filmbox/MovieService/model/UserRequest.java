@@ -1,4 +1,4 @@
 package com.filmbox.MovieService.model;
 
-public class UserRequest {
+public record UserRequest(String username) {
 }

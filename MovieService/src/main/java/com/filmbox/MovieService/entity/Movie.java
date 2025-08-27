@@ -33,7 +33,7 @@ public class Movie {
     private Integer year;
 
     // One movie can have multiple actors
-    @OneToMany(mappedBy = "movie", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "movie", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Actor> actors = new HashSet<>();
 
     // Many movies can belong to one genre
@@ -42,7 +42,7 @@ public class Movie {
     private Genre genre;
 
     // Movies can have multiple tags
-    @ManyToMany
+    @ManyToMany()
     @JoinTable(
             name = "movie_tag",
             joinColumns = @JoinColumn(name = "movie_id"),

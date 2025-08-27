@@ -18,6 +18,27 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+  # serviceregistry:
+  #   image: "confidencedev/serviceregistry"
+  #   container_name: serviceregistry
+  #   ports:
+  #     - "8761:8761"
+  #   depends_on:
+  #     - postgres
+  # cloudgateway:
+  #   image: "confidencedev/cloudgateway"
+  #   container_name: cloudgateway
+  #   ports:
+  #     - "9090:9090"
+  #   depends_on:
+  #     - serviceregistry
+  # movieservice:
+  #   image: "confidencedev/movieservice"
+  #   container_name: movieservice
+  #   ports:
+  #     - "8081:8081"
+  #   depends_on:
+  #     - cloudgateway
 
 volumes:
   postgres_data:

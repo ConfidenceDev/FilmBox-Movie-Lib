@@ -18,6 +18,11 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
 
+
+jwt:
+  secret: replace_this_with_a_long_random_secret_at_production
+  expiration-minutes: 60
+
 eureka:
   instance:
     prefer-ip-address: true

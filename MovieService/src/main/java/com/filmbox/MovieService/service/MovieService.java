@@ -9,15 +9,17 @@ import java.util.List;
 
 public interface MovieService {
 
-    UserResponse signIn(String id);
+    UserResponse signIn(String username);
 
-    UserResponse signOut(String id);
+    UserResponse signOut(String authHeader);
 
-    List<MovieResponse> getAllMovies(int page, int size, String searchBy);
+    List<MovieResponse> getAllMovies(int page, int size, String sortBy, String sortDir, String searchBy);
+
+    MovieResponse getMovieById(Long id);
 
     MovieHandler addMovie(MovieRequest movieRequest);
 
-    String updateMovie(MovieRequest movieRequest);
+    String updateMovie(Long id, MovieRequest movieRequest);
 
     String deleteMovie(Long id);
 }
