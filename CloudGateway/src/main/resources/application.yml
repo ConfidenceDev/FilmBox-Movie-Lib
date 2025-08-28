@@ -12,11 +12,20 @@ spring:
           predicates:
             - Path=/api/v1/**
 
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health, info
+  endpoint:
+    health:
+      show-details: always
+
 eureka:
   instance:
     prefer-ip-address: true
   client:
     fetch-registry: true
     register-with-eureka: true
-    server-url:
-      defaultZone: http://localhost:8761/eureka/
+    service-url:
+      defaultZone: ${EUREKA_SERVER_ADDRESS:http://localhost:8761/eureka}

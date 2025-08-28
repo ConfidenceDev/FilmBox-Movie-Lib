@@ -5,7 +5,7 @@ spring:
   application:
     name: MOVIE-SERVICE
   datasource:
-    url: jdbc:postgresql://localhost:5432/filmboxdb
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/filmboxdb}
     username: postgres
     password: root
     driver-class-name: org.postgresql.Driver
@@ -26,6 +26,16 @@ springdoc:
     operations-sorter: method
     tags-sorter: alpha
     filter: true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health, info
+  endpoint:
+    health:
+      show-details: always
+
 jwt:
   secret: X7k9pL2mQ8vJ3wR5yT1uZ6bH4nF0cD2eA6gI9jK3lM5oP7qS4rT8uV0wX2yZ4
   expiration-minutes: 60
@@ -36,5 +46,5 @@ eureka:
   client:
     fetch-registry: true
     register-with-eureka: true
-    server-url:
-      defaultZone: http://localhost:8761/eureka/
+    service-url:
+      defaultZone: ${EUREKA_SERVER_ADDRESS:http://localhost:8761/eureka}
