@@ -75,8 +75,7 @@ services:
       - "5173:5173"
       - "24678:24678"
     volumes:
-      - ./src:/app/src
-      - ./public:/app/public
+      - ./Frontend:/app
       - /app/node_modules
     environment:
       - DOCKER=true
