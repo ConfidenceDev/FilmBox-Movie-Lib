@@ -13,5 +13,6 @@ import java.util.List;
 @Repository
 public interface ActorRepository extends JpaRepository<Actor, Long> {
     @Query("SELECT DISTINCT a.movie FROM Actor a " + "WHERE LOWER(a.name) LIKE LOWER(CONCAT('%', :name, '%'))")
+
     List<Movie> findMoviesByActorName(@Param("name") String name);
 }

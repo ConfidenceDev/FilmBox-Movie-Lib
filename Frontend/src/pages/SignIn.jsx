@@ -19,7 +19,7 @@ export default function SignIn() {
       const res = await signIn(username);
       localStorage.setItem("filmbox_userId", res.username);
       localStorage.setItem("filmbox_jwt", res.token);
-      window.dispatchEvent(new Event("storage")); // <-- Add this line
+      window.dispatchEvent(new Event("storage"));
       navigate("/");
     } catch (e) {
       setError("Sign in failed");

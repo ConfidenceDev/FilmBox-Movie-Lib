@@ -43,8 +43,8 @@ export default function Home() {
     load();
   }
 
-  // For demo, assume 10 pages max (should be from backend)
-  const totalPages = 10;
+  // Assuming only 5 pages
+  const totalPages = 5;
 
   return (
     <div>

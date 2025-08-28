@@ -40,7 +40,7 @@ class MovieControllerTest {
     }
 
 
-    @DisplayName("Get all movies with defaults - Success Scenario")
+    @DisplayName("Get all movies with default request params - Success Scenario")
     @Test
     public void getAllMovies_shouldReturnOk() throws Exception {
         mockMvc.perform(get("/api/v1/movies"))
