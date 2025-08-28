@@ -4,7 +4,9 @@ import react from "@vitejs/plugin-react";
 const isDocker = process.env.DOCKER === "true";
 
 // Backend URL
-const backendUrl = "http://localhost:9090";
+const backendUrl = isDocker
+  ? "http://cloudgateway:9090"
+  : "http://localhost:9090";
 
 export default defineConfig({
   plugins: [react()],
