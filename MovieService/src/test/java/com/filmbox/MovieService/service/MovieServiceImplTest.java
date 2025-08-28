@@ -6,7 +6,9 @@ import com.filmbox.MovieService.entity.*;
 import com.filmbox.MovieService.exception.MovieException;
 import com.filmbox.MovieService.model.*;
 import com.filmbox.MovieService.respository.*;
+import io.jsonwebtoken.Jwts;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.*;
 import org.springframework.data.domain.*;
@@ -30,26 +32,29 @@ class MovieServiceImplTest {
     @Mock private TokenBlacklist tokenBlacklist;
 
     @BeforeEach
-    void setUp() {
+    public void setUp() {
         MockitoAnnotations.openMocks(this);
     }
 
+    @DisplayName("Signin user - Success Scenario")
     @Test
-    void signIn_shouldReturnUserResponse() {
+    public void signIn_shouldReturnUserResponse() {
         UserResponse response = movieService.signIn("user");
         assertEquals("user", response.username());
         assertNotNull(response.token());
     }
 
+    @DisplayName("Signout user - Success Scenario")
     @Test
-    void signOut_shouldReturnUserResponse() {
+    public void signOut_shouldReturnUserResponse() {
         when(jwtUtil.validate(anyString())).thenReturn(Jwts.parser().parseClaimsJws("dummy"));
         UserResponse response = movieService.signOut("Bearer token");
         assertNotNull(response.username());
     }
 
+    @DisplayName("Get all movies - Success Scenario")
     @Test
-    void getAllMovies_shouldReturnList() {
+    public void getAllMovies_shouldReturnList() {
         Movie movie = Movie.builder().id(1L).posterId("user").title("Test").year(2020).build();
         Page<Movie> page = new PageImpl<>(List.of(movie));
         when(movieRepository.findAll(any(Pageable.class))).thenReturn(page);
@@ -58,8 +63,9 @@ class MovieServiceImplTest {
         assertFalse(result.isEmpty());
     }
 
+    @DisplayName("Get a movie by Id - Success Scenario")
     @Test
-    void getMovieById_shouldReturnMovieResponse() {
+    public void getMovieById_shouldReturnMovieResponse() {
         Movie movie = Movie.builder().id(1L).posterId("user").title("Test").year(2020).build();
         when(movieRepository.findById(1L)).thenReturn(Optional.of(movie));
 
@@ -67,8 +73,9 @@ class MovieServiceImplTest {
         assertEquals(1L, response.getId());
     }
 
+    @DisplayName("Add a movie - Success Scenario")
     @Test
-    void addMovie_shouldReturnMovieHandler() {
+    public void addMovie_shouldReturnMovieHandler() {
         MovieRequest req = MovieRequest.builder().posterId("user").title("Test").year(2020).build();
         Genre genre = Genre.builder().genre("Action").build();
         when(genreRepository.findByGenreIgnoreCase(anyString())).thenReturn(Optional.of(genre));
@@ -78,8 +85,9 @@ class MovieServiceImplTest {
         assertNotNull(handler);
     }
 
+    @DisplayName("Update a movie - Success Scenario")
     @Test
-    void updateMovie_shouldReturnString() {
+    public void updateMovie_shouldReturnString() {
         Movie movie = Movie.builder().id(1L).posterId("user").title("Old").year(2020).build();
         MovieRequest req = MovieRequest.builder().posterId("user").title("New").year(2021).build();
         when(movieRepository.findById(1L)).thenReturn(Optional.of(movie));
@@ -91,8 +99,9 @@ class MovieServiceImplTest {
         assertTrue(result.contains("Movie updated successfully"));
     }
 
+    @DisplayName("Delete a movie - Success Scenario")
     @Test
-    void deleteMovie_shouldReturnString() {
+    public void deleteMovie_shouldReturnString() {
         Movie movie = Movie.builder().id(1L).posterId("user").build();
         when(movieRepository.findById(1L)).thenReturn(Optional.of(movie));
         when(jwtUtil.validate(anyString())).thenReturn(Jwts.parser().parseClaimsJws("dummy"));

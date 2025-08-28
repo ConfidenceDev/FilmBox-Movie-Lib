@@ -2,7 +2,7 @@ package com.filmbox.MovieService.controller;
 
 import com.filmbox.MovieService.model.*;
 import com.filmbox.MovieService.service.MovieService;
-import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,7 +15,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("api/v1")
-@Log4j2
+@Slf4j
 @Tag(name = "Users and Movies", description = "Endpoints for managing user authorization with JWT and movies CRUD operations")
 public class MovieController {
 
