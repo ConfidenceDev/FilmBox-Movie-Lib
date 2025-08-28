@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.Instant;
 import java.util.List;
 
 @Data
@@ -13,6 +14,7 @@ import java.util.List;
 @Builder
 public class MovieResponse {
     private Long id;
+    private String posterId;
     private String title;
     private String summary;
     private Integer year;
@@ -20,4 +22,5 @@ public class MovieResponse {
     private List<String> actors;
     private List<String> tags;
     private String message;
+    private Instant createdAt;
 }

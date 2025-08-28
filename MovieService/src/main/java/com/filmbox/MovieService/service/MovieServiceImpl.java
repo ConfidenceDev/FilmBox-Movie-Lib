@@ -135,32 +135,37 @@ public class MovieServiceImpl implements MovieService {
                 .build());
     }
 
-    @Override
-    public MovieResponse getMovieById(Long id) {
-        Movie movie = movieRepository.findById(id)
-                .orElseThrow(() -> new MovieException("Movie not found with ID: " + id, "NOT_FOUND", 404));
-
-        return MovieResponse.builder()
-                .id(movie.getId())
-                .title(movie.getTitle())
-                .summary(movie.getSummary())
-                .year(movie.getYear())
-                .genre(movie.getGenre() != null ? movie.getGenre().getGenre() : null)
-                .actors(movie.getActors().stream().map(Actor::getName).toList())
-                .tags(movie.getTags().stream().map(Tag::getTag).toList())
-                .build();
-    }
-
     private List<MovieResponse> mapToResponse(List<Movie> movies) {
         return movies.stream().map(movie -> MovieResponse.builder()
                 .id(movie.getId())
+                .posterId(movie.getPosterId())
                 .title(movie.getTitle())
                 .summary(movie.getSummary())
                 .year(movie.getYear())
                 .genre(movie.getGenre() != null ? movie.getGenre().getGenre() : null)
                 .actors(movie.getActors().stream().map(Actor::getName).toList())
                 .tags(movie.getTags().stream().map(Tag::getTag).toList())
+                .createdAt(movie.getCreatedAt())
                 .build()).toList();
+    }
+
+
+    @Override
+    public MovieResponse getMovieById(Long movieId) {
+        Movie movie = movieRepository.findById(movieId)
+                .orElseThrow(() -> new MovieException("Movie not found with ID: " + movieId, "NOT_FOUND", 404));
+
+        return MovieResponse.builder()
+                .id(movie.getId())
+                .posterId(movie.getPosterId())
+                .title(movie.getTitle())
+                .summary(movie.getSummary())
+                .year(movie.getYear())
+                .genre(movie.getGenre() != null ? movie.getGenre().getGenre() : null)
+                .actors(movie.getActors().stream().map(Actor::getName).toList())
+                .tags(movie.getTags().stream().map(Tag::getTag).toList())
+                .createdAt(movie.getCreatedAt())
+                .build();
     }
 
     @Override
@@ -171,6 +176,7 @@ public class MovieServiceImpl implements MovieService {
 
         // Create Movie
         Movie movie = Movie.builder()
+                .posterId(movieRequest.getPosterId())
                 .title(movieRequest.getTitle())
                 .summary(movieRequest.getSummary())
                 .year(movieRequest.getYear())
@@ -199,12 +205,17 @@ public class MovieServiceImpl implements MovieService {
     }
 
     @Override
-    public String updateMovie(Long id, MovieRequest movieRequest) {
+    public String updateMovie(Long movieId, MovieRequest movieRequest) {
         // Find movie
-        Movie movie = movieRepository.findById(id)
+        Movie movie = movieRepository.findById(movieId)
                 .orElseThrow(() -> new MovieException("Movie not found", "NOT_FOUND", 404));
 
+        if (!movie.getPosterId().equals(movieRequest.getPosterId())) {
+            throw new MovieException("Unauthorized: only poster can update this movie", "FORBIDDEN", 403);
+        }
+
         // Update fields
+        movie.setPosterId(movieRequest.getPosterId());
         movie.setTitle(movieRequest.getTitle());
         movie.setSummary(movieRequest.getSummary());
         movie.setYear(movieRequest.getYear());
@@ -242,9 +253,25 @@ public class MovieServiceImpl implements MovieService {
     }
 
     @Override
-    public String deleteMovie(Long id) {
-        Movie movie = movieRepository.findById(id)
+    public String deleteMovie(Long movieId, String authHeader) {
+        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+            throw new MovieException("Invalid Authorization Header", "UNAUTHORIZED", 401);
+        }
+        String token = authHeader.substring(7);
+        String posterId;
+        Movie movie = movieRepository.findById(movieId)
                 .orElseThrow(() -> new MovieException("Movie not found", "NOT_FOUND", 404));
+
+        try {
+            posterId = jwtUtil.validate(token).getBody().getSubject();
+        } catch (Exception e) {
+            log.warn("Invalid/expired token: {}", e.getMessage());
+            throw new MovieException("Invalid or Expired Authorization Header", "UNAUTHORIZED", 401);
+        }
+
+        if (!movie.getPosterId().equals(posterId)) {
+            throw new MovieException("Unauthorized: only poster can delete this movie", "FORBIDDEN", 403);
+        }
         movieRepository.delete(movie);
         return "Movie deleted successfully";
     }

@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
 import java.util.List;
 
 @Data
@@ -12,6 +13,7 @@ import java.util.List;
 @NoArgsConstructor
 @Builder
 public class MovieRequest {
+    private String posterId;
     private String title;
     private String summary;
     private Integer year;

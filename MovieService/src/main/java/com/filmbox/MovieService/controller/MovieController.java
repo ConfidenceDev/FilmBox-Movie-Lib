@@ -22,7 +22,7 @@ public class MovieController {
     @Autowired
     private MovieService movieService;
 
-    @GetMapping()
+    @GetMapping("/test")
     public String hello() {
         return "Hello World!";
     }
@@ -57,11 +57,11 @@ public class MovieController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @GetMapping("/movies/{id}")
+    @GetMapping("/movies/{movieId}")
     @Operation(summary = "Fetch a movie", description = "Retrieve a movie with its details")
-    public ResponseEntity<MovieResponse> getMovieById(@PathVariable Long id) {
-        MovieResponse response = movieService.getMovieById(id);
-        log.info("Retrieved one movie with id: {}", id);
+    public ResponseEntity<MovieResponse> getMovieById(@PathVariable Long movieId) {
+        MovieResponse response = movieService.getMovieById(movieId);
+        log.info("Retrieved one movie with id: {}", movieId);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
@@ -73,20 +73,21 @@ public class MovieController {
         return new ResponseEntity<>(movieHandler, HttpStatus.CREATED);
     }
 
-    @PutMapping("/movies/{id}")
+    @PutMapping("/movies/{movieId}")
     @Operation(summary = "Update a movie", description = "Update details of an existing movie in the library")
-    public ResponseEntity<String> updateMovie(@PathVariable Long id, @RequestBody MovieRequest movieRequest) {
-        String companyId = movieService.updateMovie(id, movieRequest);
+    public ResponseEntity<String> updateMovie(@PathVariable Long movieId, @RequestBody MovieRequest movieRequest) {
+        String companyId = movieService.updateMovie(movieId, movieRequest);
         log.info("Movie updated Id: {}", companyId);
         return new ResponseEntity<>(companyId, HttpStatus.OK);
     }
 
-    @DeleteMapping("/movies/{id}")
+    @DeleteMapping("/movies/{movieId}")
     @Operation(summary = "Remove a movie", description = "Remove a move from the library with its id")
-    public ResponseEntity<MovieHandler> deleteMovie(@RequestBody Long id) {
-        String message = movieService.deleteMovie(id);
-        MovieHandler movieHandler = new MovieHandler(id, message);
-        log.info("Movie removed: {}", id);
+    public ResponseEntity<MovieHandler> deleteMovie(@PathVariable Long movieId,
+                                                    @RequestHeader("Authorization") String authHeader) {
+        String message = movieService.deleteMovie(movieId, authHeader);
+        MovieHandler movieHandler = new MovieHandler(movieId, message);
+        log.info("Movie removed: {}", movieId);
         return new ResponseEntity<>(movieHandler, HttpStatus.OK);
     }
 

@@ -20,8 +20,9 @@ public class SecurityConfig {
         http
                 .csrf(csrf -> csrf.disable()) // disable CSRF for stateless APIs
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/v1/movies/signIn").permitAll()
-                        .requestMatchers("/api/v1/movies/signOut").permitAll()
+                        .requestMatchers("/api/v1/test").permitAll()
+                        .requestMatchers("/api/v1/signIn").permitAll()
+                        .requestMatchers("/api/v1/signOut").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/v1/movies/**").permitAll()
                         .anyRequest().authenticated()
                 );
