@@ -1,10 +1,7 @@
 package com.filmbox.MovieService.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import lombok.extern.log4j.Log4j2;
 
 import java.time.Instant;
@@ -33,16 +30,18 @@ public class Movie {
     @Column(columnDefinition = "TEXT")
     private String summary;
 
-    @Column(nullable = false) // Required
+    @Column(nullable = false)
     private Integer year;
 
     // One movie can have multiple actors
     @OneToMany(mappedBy = "movie", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    @EqualsAndHashCode.Exclude
     private Set<Actor> actors = new HashSet<>();
 
     // Many movies can belong to one genre
     @ManyToOne
-    @JoinColumn(name = "genre_id") // foreign key
+    @JoinColumn(name = "genre_id")
+    @EqualsAndHashCode.Exclude
     private Genre genre;
 
     // Movies can have multiple tags
@@ -52,6 +51,7 @@ public class Movie {
             joinColumns = @JoinColumn(name = "movie_id"),
             inverseJoinColumns = @JoinColumn(name = "tag_id")
     )
+    @EqualsAndHashCode.Exclude
     private Set<Tag> tags = new HashSet<>();
 
     @Column(nullable = false, updatable = false)

@@ -54,7 +54,7 @@ export default function Home() {
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Search movies, actors, genres, tags..."
-            className="flex-1 p-2 rounded border"
+            className="flex-1 p-2 rounded border text-white bg-gray-800"
           />
           <select
             value={sortDir}

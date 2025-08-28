@@ -1,7 +1,9 @@
 package com.filmbox.MovieService.controller;
 
+import com.filmbox.MovieService.config.JwtUtil;
 import com.filmbox.MovieService.model.MovieRequest;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +11,9 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+
+import java.util.ArrayList;
+import java.util.HashSet;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -23,24 +28,38 @@ class MovieControllerTest {
     @Autowired
     private ObjectMapper objectMapper;
 
-    @DisplayName("Get all creators - Success Scenario")
+    @Autowired
+    private JwtUtil jwtUtil;
+
+    private String token;
+
+    @BeforeEach
+    void setUp() {
+        // generate a fresh token before each test
+        token = jwtUtil.generateToken("test123");
+    }
+
+
+    @DisplayName("Get all movies with defaults - Success Scenario")
     @Test
     public void getAllMovies_shouldReturnOk() throws Exception {
         mockMvc.perform(get("/api/v1/movies"))
                 .andExpect(status().isOk());
     }
 
-    @DisplayName("Get all creators - Success Scenario")
+    @DisplayName("Add a new movie - Success Scenario")
     @Test
     public void addMovie_shouldReturnCreated() throws Exception {
         MovieRequest req = MovieRequest.builder()
-                .posterId("user")
-                .title("Integration Movie")
+                .posterId("test123")
+                .title("Test Movie")
+                .summary("This is a test movie")
                 .year(2022)
-                .genre("Drama")
+                .genre("Action")
                 .build();
 
         mockMvc.perform(post("/api/v1/movies")
+                        .header("Authorization", "Bearer " + token)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(req)))
                 .andExpect(status().isCreated());

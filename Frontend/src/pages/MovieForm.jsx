@@ -93,7 +93,7 @@ export default function MovieForm({ edit }) {
           name="title"
           value={form.title}
           onChange={handleChange}
-          className="w-full p-2 border rounded"
+          className="w-full p-2 border rounded text-white bg-gray-800"
           required
         />
       </div>
@@ -103,7 +103,7 @@ export default function MovieForm({ edit }) {
           name="summary"
           value={form.summary}
           onChange={handleChange}
-          className="w-full p-2 border rounded"
+          className="w-full p-2 border rounded text-white bg-gray-800"
           rows={3}
           required
         />

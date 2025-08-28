@@ -16,10 +16,13 @@ function authHeaders() {
 }
 
 export async function signIn(username) {
+  const userRequest = {
+    username: username,
+  };
   const res = await fetch(`${API_BASE}/signIn`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(username),
+    body: JSON.stringify(userRequest),
   });
   if (!res.ok) throw new Error("Sign in failed");
   return res.json();

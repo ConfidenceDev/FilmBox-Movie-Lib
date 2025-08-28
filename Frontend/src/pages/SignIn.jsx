@@ -19,6 +19,7 @@ export default function SignIn() {
       const res = await signIn(username);
       localStorage.setItem("filmbox_userId", res.username);
       localStorage.setItem("filmbox_jwt", res.token);
+      window.dispatchEvent(new Event("storage")); // <-- Add this line
       navigate("/");
     } catch (e) {
       setError("Sign in failed");
@@ -28,7 +29,7 @@ export default function SignIn() {
   }
 
   return (
-    <div className="flex items-center justify-center min-h-screen w-screen bg-gray-50">
+    <div className="fixed inset-0 flex items-center justify-center bg-gray-50">
       <div className="w-full max-w-md bg-white rounded shadow p-8 flex flex-col items-center">
         <h2 className="text-2xl font-bold mb-6">Sign In</h2>
         {error && <div className="text-red-500 mb-4">{error}</div>}

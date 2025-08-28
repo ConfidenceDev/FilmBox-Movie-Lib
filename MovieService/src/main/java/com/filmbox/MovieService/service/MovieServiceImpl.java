@@ -4,10 +4,7 @@ import com.filmbox.MovieService.config.JwtUtil;
 import com.filmbox.MovieService.config.TokenBlacklist;
 import com.filmbox.MovieService.entity.*;
 import com.filmbox.MovieService.exception.MovieException;
-import com.filmbox.MovieService.model.MovieHandler;
-import com.filmbox.MovieService.model.MovieRequest;
-import com.filmbox.MovieService.model.MovieResponse;
-import com.filmbox.MovieService.model.UserResponse;
+import com.filmbox.MovieService.model.*;
 import com.filmbox.MovieService.respository.ActorRepository;
 import com.filmbox.MovieService.respository.GenreRepository;
 import com.filmbox.MovieService.respository.MovieRepository;
@@ -21,6 +18,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import java.time.Instant;
 
+import java.util.HashSet;
 import java.util.List;
 
 @Service
@@ -47,7 +45,9 @@ public class MovieServiceImpl implements MovieService {
 
     //========= User Logic ======================
     @Override
-    public UserResponse signIn(String username) {
+    public UserResponse signIn(UserRequest userRequest) {
+        String username = userRequest.username();
+        log.info("Here ======================== {}", username);
         if (username == null || username.trim().isEmpty()) {
             throw new MovieException("Username required", "UNAUTHORIZED", 204);
         }
@@ -111,22 +111,22 @@ public class MovieServiceImpl implements MovieService {
             return mapToResponse(movies.getContent());
         }
 
-        // 2. Search in Actors table
-        movies = actorRepository.findMoviesByActorName(searchBy, pageable);
-        if (movies.hasContent()) {
-            return mapToResponse(movies.getContent());
+        // 2. Search in Actors table - No pagination
+        List<Movie> actorMovies = actorRepository.findMoviesByActorName(searchBy);
+        if (!actorMovies.isEmpty()) {
+            return mapToResponse(actorMovies);
         }
 
-        // 3. Search in Genres table
-        movies = genreRepository.findMoviesByGenre(searchBy, pageable);
-        if (movies.hasContent()) {
-            return mapToResponse(movies.getContent());
+        // 3. Search in Genres table - No pagination
+        List<Movie> genreMovies = genreRepository.findMoviesByGenre(searchBy);
+        if (!genreMovies.isEmpty()) {
+            return mapToResponse(genreMovies);
         }
 
-        // 4. Search in Tags table
-        movies = tagRepository.findMoviesByTag(searchBy, pageable);
-        if (movies.hasContent()) {
-            return mapToResponse(movies.getContent());
+        // 4. Search in Tags table - No pagination
+        List<Movie> tagMovies = tagRepository.findMoviesByTag(searchBy);
+        if (!tagMovies.isEmpty()) {
+            return mapToResponse(tagMovies);
         }
 
         // Otherwise - Nothing found
@@ -171,6 +171,7 @@ public class MovieServiceImpl implements MovieService {
     @Override
     public MovieHandler addMovie(MovieRequest movieRequest) {
         // Find or create Genre
+        log.info("Checking if genre exists");
         Genre genre = genreRepository.findByGenreIgnoreCase(movieRequest.getGenre())
                 .orElseGet(() -> genreRepository.save(Genre.builder().genre(movieRequest.getGenre()).build()));
 
@@ -178,9 +179,11 @@ public class MovieServiceImpl implements MovieService {
         Movie movie = Movie.builder()
                 .posterId(movieRequest.getPosterId())
                 .title(movieRequest.getTitle())
+                .actors(new HashSet<>())
                 .summary(movieRequest.getSummary())
                 .year(movieRequest.getYear())
                 .genre(genre)
+                .tags(new HashSet<>())
                 .build();
 
         // Add Actors
@@ -200,6 +203,7 @@ public class MovieServiceImpl implements MovieService {
             }
         }
 
+        log.info("Movie Added: {}", movie);
         Movie saved = movieRepository.save(movie);
         return new MovieHandler(saved.getId(), "Movie Added Successfully");
     }
@@ -263,7 +267,7 @@ public class MovieServiceImpl implements MovieService {
                 .orElseThrow(() -> new MovieException("Movie not found", "NOT_FOUND", 404));
 
         try {
-            posterId = jwtUtil.validate(token).getBody().getSubject();
+            posterId = jwtUtil.getUsername(token);
         } catch (Exception e) {
             log.warn("Invalid/expired token: {}", e.getMessage());
             throw new MovieException("Invalid or Expired Authorization Header", "UNAUTHORIZED", 401);

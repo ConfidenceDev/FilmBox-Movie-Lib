@@ -2,10 +2,7 @@ package com.filmbox.MovieService.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import lombok.extern.log4j.Log4j2;
 
 import java.util.HashSet;
@@ -29,5 +26,6 @@ public class Genre {
     // One genre can belong to many movies
     @OneToMany(mappedBy = "genre", fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JsonIgnore
+    @EqualsAndHashCode.Exclude
     private Set<Movie> movies = new HashSet<>();
 }

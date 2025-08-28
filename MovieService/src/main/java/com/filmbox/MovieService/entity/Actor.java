@@ -2,10 +2,7 @@ package com.filmbox.MovieService.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import lombok.extern.log4j.Log4j2;
 
 @Entity
@@ -27,5 +24,6 @@ public class Actor {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "movie_id")
     @JsonIgnore
+    @EqualsAndHashCode.Exclude
     private Movie movie;
 }

@@ -2,17 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-html,
-body,
-#root {
-  height: 100%;
-  width: 100%;
-}
-
-body {
-  @apply bg-gray-50 text-gray-900 min-h-screen w-full;
-}
-
 :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
@@ -26,6 +15,24 @@ body {
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  width: 100%;
+}
+
+body {
+  @apply bg-gray-50 text-gray-900 min-h-screen w-full;
+}
+
+input,
+textarea,
+select {
+  color: #fff !important;
+  background-color: #1a1a1a !important;
 }
 
 a {

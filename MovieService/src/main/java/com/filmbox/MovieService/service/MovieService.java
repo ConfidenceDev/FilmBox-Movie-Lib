@@ -1,15 +1,12 @@
 package com.filmbox.MovieService.service;
 
-import com.filmbox.MovieService.model.MovieHandler;
-import com.filmbox.MovieService.model.MovieRequest;
-import com.filmbox.MovieService.model.MovieResponse;
-import com.filmbox.MovieService.model.UserResponse;
+import com.filmbox.MovieService.model.*;
 
 import java.util.List;
 
 public interface MovieService {
 
-    UserResponse signIn(String username);
+    UserResponse signIn(UserRequest userRequest);
 
     UserResponse signOut(String authHeader);
 
