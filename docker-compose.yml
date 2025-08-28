@@ -65,6 +65,23 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    image: confidencedev/filmbox-web
+    container_name: filmbox-web
+    ports:
+      - "5173:5173"
+      - "24678:24678"
+    volumes:
+      - ./src:/app/src
+      - ./public:/app/public
+      - /app/node_modules
+    environment:
+      - DOCKER=true
+      - NODE_ENV=development
+    command: npm run dev -- --host 0.0.0.0
 
 volumes:
   postgres_data:

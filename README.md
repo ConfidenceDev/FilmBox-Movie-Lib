@@ -85,9 +85,9 @@ http://localhost:8080/swagger-ui/index.html
 
 ---
 
-## Alternative: Run Backend with Docker
+## Alternative: Run with Docker
 
-You can run the backend stack (PostgreSQL, Service Registry, Cloud Gateway, Movie Service) using Docker Compose (Start, Stop and Access to PostgreSQL Database):
+You can run the frontend (React + Vite) and backend stack (PostgreSQL, Service Registry, Cloud Gateway, Movie Service) using Docker Compose (Start, Stop and Access to PostgreSQL Database):
 
 ```sh
 docker compose -f docker-compose.yml up -d
@@ -105,6 +105,7 @@ docker exec -it movie-postgres psql -U postgres -d filmboxdb
 - Service Registry: [http://localhost:8761](http://localhost:8761)
 - Cloud Gateway: [http://localhost:9090](http://localhost:9090)
 - Movie Service: [http://localhost:8082](http://localhost:8082)
+- Frontend: [http://localhost:5173](http://localhost:5173)
 
 ---
 
@@ -129,4 +130,3 @@ For inquiries, support, bug reports, or suggestions:
 - Email: confidostic3@gmail.com
 - Facebook: Confidence Dev
 - Twitter: [@ConfidenceDev](https://twitter.com/confidencedev)
--
