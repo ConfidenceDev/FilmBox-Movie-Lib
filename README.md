@@ -73,7 +73,7 @@ The app will be available at [http://localhost:5173](http://localhost:5173).
 Once the backend is running, access the API docs at:
 
 ```
-http://localhost:8082/swagger-ui/index.html
+http://localhost:8080/swagger-ui/index.html
 ```
 
 ---
@@ -128,5 +128,5 @@ For inquiries, support, bug reports, or suggestions:
 
 - Email: confidostic3@gmail.com
 - Facebook: Confidence Dev
-- Twitter: [@ConfidenceDev](https://twitter.com/ConfidenceDev)
+- Twitter: [@ConfidenceDev](https://twitter.com/confidencedev)
 -

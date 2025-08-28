@@ -20,13 +20,11 @@ spring:
 
 springdoc:
   api-docs:
-    enabled: true
     path: /v3/api-docs
   swagger-ui:
-    enabled: true
     path: /swagger-ui/index.html
-    operationsSorter: method
-    tagsSorter: alpha
+    operations-sorter: method
+    tags-sorter: alpha
     filter: true
 jwt:
   secret: X7k9pL2mQ8vJ3wR5yT1uZ6bH4nF0cD2eA6gI9jK3lM5oP7qS4rT8uV0wX2yZ4
