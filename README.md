@@ -98,7 +98,7 @@ docker compose -f docker-compose.yml down
 ```
 
 ```sh
-docker exec -it movie-postgres psql -U postgres -d filmboxdb
+docker exec -it postgres psql -U postgres -d filmboxdb
 ```
 
 - PostgreSQL: `localhost:5432`
