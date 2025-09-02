@@ -98,39 +98,5 @@ class MovieControllerTest {
                         .header("Authorization", "Bearer " + token))
                 .andExpect(status().isNotFound());
     }
-
-    /*@DisplayName("Add a new movie - Unauthorized")
-    @Test
-    void addMovie_shouldReturnUnauthorized() throws Exception {
-        MovieRequest req = MovieRequest.builder()
-                .posterId("test123")
-                .title("Test Movie")
-                .summary("This is a test movie")
-                .year(2022)
-                .genre("Action")
-                .build();
-
-        mockMvc.perform(post("/api/v1/movies")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(req)))
-                .andExpect(status().isUnauthorized());
-    }
-
-    @DisplayName("Sign in - Success")
-    @Test
-    void signIn_shouldReturnOk() throws Exception {
-        mockMvc.perform(post("/api/v1/signIn")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content("\"test123\""))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.username").value("test123"))
-                .andExpect(jsonPath("$.token").exists());
-    }
-
-    @DisplayName("Sign out - Unauthorized")
-    @Test
-    void signOut_shouldReturnUnauthorized() throws Exception {
-        mockMvc.perform(get("/api/v1/signOut"))
-                .andExpect(status().isUnauthorized());
-    }*/
+    
 }

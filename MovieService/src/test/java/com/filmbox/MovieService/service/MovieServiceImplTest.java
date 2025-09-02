@@ -115,16 +115,6 @@ class MovieServiceImplTest {
         assertEquals("Movie Added Successfully", handler.message());
     }
 
-    /*@DisplayName("Update movie - Unauthorized")
-    @Test
-    void updateMovie_shouldThrowIfNotPoster() {
-        Movie movie = Movie.builder().id(1L).posterId("test123").actors(new HashSet<>()).tags(new HashSet<>()).build();
-        when(movieRepository.findById(1L)).thenReturn(Optional.of(movie));
-        MovieRequest req = MovieRequest.builder().posterId("test123").build();
-        Exception ex = assertThrows(MovieException.class, () -> movieService.updateMovie(1L, req));
-        assertTrue(ex.getMessage().contains("Unauthorized"));
-    }*/
-
     @DisplayName("Delete movie - Success")
     @Test
     void deleteMovie_shouldDeleteIfPoster() {
