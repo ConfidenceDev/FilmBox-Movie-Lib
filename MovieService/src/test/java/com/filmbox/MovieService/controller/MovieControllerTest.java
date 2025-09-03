@@ -98,5 +98,5 @@ class MovieControllerTest {
                         .header("Authorization", "Bearer " + token))
                 .andExpect(status().isNotFound());
     }
-    
+
 }

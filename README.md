@@ -129,4 +129,4 @@ For inquiries, support, bug reports, or suggestions:
 
 - Email: confidostic3@gmail.com
 - Facebook: Confidence Dev
-- Twitter: [@ConfidenceDev](https://twitter.com/confidencedev)
+- Twitter: [@confidencedev](https://twitter.com/confidencedev)
